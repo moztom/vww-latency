@@ -53,7 +53,6 @@ struct ContentView: View {
 
             var newResults: [ModelResult] = []
 
-            // 100 iterations, you can tweak
             let iters = 500
 
             if let ms = bench.benchmarkBaseline(iterations: iters) {

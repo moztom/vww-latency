@@ -3,37 +3,32 @@ import CoreML
 
 final class CoreMLBenchmarker {
 
-    // Keep models in memory so we don't pay load cost repeatedly
+    // keep models in memory
     private let baselineModel: baseline_fp32
     private let studentModel: student_fp32
     private let prunedModel: pruned_fp32
     private let prunedQuantModel: pruned_int8
 
     init() {
-        // Using default configuration is fine for now
         baselineModel = try! baseline_fp32(configuration: MLModelConfiguration())
         studentModel  = try! student_fp32(configuration: MLModelConfiguration())
         prunedModel   = try! pruned_fp32(configuration: MLModelConfiguration())
         prunedQuantModel = try! pruned_int8(configuration: MLModelConfiguration())
     }
 
-    /// Create a dummy input tensor [1, 3, 96, 96] matching the Core ML model's expectations.
-    /// You can later replace this with real preprocessed image data if you want.
     private func makeRandomInput() -> MLMultiArray {
-        // Shape NCHW: 1x3x96x96
+        // dummy input tensor of shape (nchw): 1x3x96x96
         let shape: [NSNumber] = [1, 3, 96, 96]
         let arr = try! MLMultiArray(shape: shape, dataType: .float32)
 
-        // Fill with zeros or small random numbers; doesn't matter for latency.
+        // fill it with zeros - doesn't make a difference for latency test
         let count = arr.count
         for i in 0..<count {
-            arr[i] = 0.0  // or Float.random(in: 0...1)
+            arr[i] = 0.0
         }
         return arr
     }
 
-    // Wrappers to match the generated input type.
-    // Adjust `input` label if Xcode used a different name.
     private func baselineInput(_ arr: MLMultiArray) -> baseline_fp32Input {
         baseline_fp32Input(input: arr)
     }
@@ -59,13 +54,13 @@ final class CoreMLBenchmarker {
         var times: [Double] = []
         times.reserveCapacity(iterations)
 
-        // Warm-up run
+        // warm up run
         for _ in 0..<warmup {
             let warmInput = makeInput()
             _ = try? call(warmInput)
         }
         
-        // Timed runs
+        // timed runs
         for _ in 0..<iterations {
             let inp = makeInput()
             let start = CFAbsoluteTimeGetCurrent()
