@@ -1,4 +1,4 @@
-# VWW iOS Benchmarking App
+# VWW iOS Benchmarking Harness
 
 Supporting repository for the MSc dissertation project: "Building Lightweight Neural Networks" by Thomas Morris. 
 
@@ -12,7 +12,7 @@ This repository contains the iOS benchmarking harness for the deployment and eva
 
 ### Running the App
 - Build and install the app on your iPhone.
-- Tap "Run Benchmarks" to execute the protocol: the app will display p90 latency for each model variant after each run.
+- Tap "Run Benchmarks" to execute the protocol. The app will display p90 latency for each model variant after each run.
 
 ## Project Structure
 - `CoreMLBenchmarker.swift`: Core benchmarking logic and model runner
