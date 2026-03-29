@@ -4,7 +4,7 @@ import CoreML
 struct ModelResult: Identifiable {
     let id = UUID()
     let name: String
-    let avgMs: Double
+    let p90Ms: Double
 }
 
 struct ContentView: View {
@@ -33,10 +33,13 @@ struct ContentView: View {
                     HStack {
                         Text(r.name)
                         Spacer()
-                        Text(String(format: "%.2f ms", r.avgMs))
+                        Text(String(format: "%.2f ms", r.p90Ms))
                             .monospacedDigit()
                     }
                 }
+                Text("Latency values are p90 (90th percentile)")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
             }
             .padding()
             .navigationTitle("VWW Latency Bench")
@@ -53,19 +56,19 @@ struct ContentView: View {
 
             var newResults: [ModelResult] = []
 
-            let iters = 500
+            let iters = 1024
 
-            if let ms = bench.benchmarkBaseline(iterations: iters) {
-                newResults.append(ModelResult(name: "Baseline", avgMs: ms))
+            if let m = bench.benchmarkBaseline(iterations: iters) {
+                newResults.append(ModelResult(name: "Baseline", p90Ms: m.p90Ms))
             }
-            if let ms = bench.benchmarkStudent(iterations: iters) {
-                newResults.append(ModelResult(name: "Student", avgMs: ms))
+            if let m = bench.benchmarkStudent(iterations: iters) {
+                newResults.append(ModelResult(name: "Student", p90Ms: m.p90Ms))
             }
-            if let ms = bench.benchmarkPruned(iterations: iters) {
-                newResults.append(ModelResult(name: "Pruned", avgMs: ms))
+            if let m = bench.benchmarkPruned(iterations: iters) {
+                newResults.append(ModelResult(name: "Pruned", p90Ms: m.p90Ms))
             }
-            if let ms = bench.benchmarkPrunedQuant(iterations: iters) {
-                newResults.append(ModelResult(name: "Pruned (CoreML int8)", avgMs: ms))
+            if let m = bench.benchmarkQuantized(iterations: iters) {
+                newResults.append(ModelResult(name: "Quantized", p90Ms: m.p90Ms))
             }
 
             DispatchQueue.main.async {
