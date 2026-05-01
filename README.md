@@ -20,4 +20,4 @@ This repository contains the iOS benchmarking harness for the deployment and eva
 - (Other supporting files: app entry point, assets, etc.)
 
 ## Relation to Main Repository
-Training, compression, and Core ML export scripts are in a separate repository referenced in the dissertation. This app is for deployment and benchmarking only.
+Training, compression, and Core ML export scripts are in a separate repository ([VWW](https://github.com/moztom/vww)). This app is for deployment and benchmarking only.
