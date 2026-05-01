@@ -1,6 +1,6 @@
 # VWW iOS Benchmarking Harness
 
-Supporting repository for the MSc dissertation project: "Building Lightweight Neural Networks" by Thomas Morris. 
+Supporting repository for the MSc dissertation project: "Building Lightweight Neural Networks". 
 
 This repository contains the iOS benchmarking harness for the deployment and evaluation component of the project.
 
